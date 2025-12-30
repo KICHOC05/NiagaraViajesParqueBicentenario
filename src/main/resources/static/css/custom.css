@@ -1,0 +1,83 @@
+/* Estilos adicionales para asegurar que todo se vea bien */
+.bg-light {
+    background-color: #f8f9fa !important;
+}
+
+.bg-white {
+    background-color: #ffffff !important;
+}
+
+.bg-light-yellow {
+    background-color: var(--light-yellow) !important;
+}
+
+/* Asegurar que los textos sean visibles */
+.text-dark {
+    color: #212529 !important;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+/* Asegurar que las imágenes sean responsivas */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Asegurar que los formularios sean visibles */
+form {
+    display: block !important;
+}
+
+/* Estilos específicos para la sección "Sobre Nosotros" */
+#nosotros .lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
+
+#nosotros ul li {
+    margin-bottom: 0.5rem;
+}
+
+/* Estilos para los testimonios */
+.testimonial-card .fa-star {
+    color: var(--accent-yellow);
+}
+
+/* Asegurar que el footer sea visible */
+.footer-custom {
+    background-color: #1e293b !important;
+    color: white !important;
+}
+
+.footer-custom a {
+    color: white !important;
+    text-decoration: none;
+}
+
+.footer-custom a:hover {
+    color: var(--accent-yellow) !important;
+}
+
+/* Corregir el carrusel de proveedores */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: var(--primary-blue);
+    border-radius: 50%;
+    padding: 10px;
+}
+
+/* Asegurar que los placeholders sean visibles */
+::placeholder {
+    color: #6c757d !important;
+    opacity: 1;
+}
+
+/* Asegurar que los labels sean visibles */
+.form-label {
+    color: #212529 !important;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;

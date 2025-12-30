@@ -1,0 +1,84 @@
+<header th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container">
+            <!-- Logo con texto en dos líneas -->
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img th:src="@{/images/niagaraLogo.png}" 
+                     src="/images/niagaraLogo.png" 
+                     class="brand-logo" 
+                     alt="Niagara Viajes Logo"
+                     onerror="this.src='/images/placeholder-logo.png'">
+                <div class="d-flex flex-column ms-2">
+                    <span class="fw-bold text-primary mb-0">Niagara Viajes</span>
+                    <small class="text-muted mt-0">Parque Bicentenario</small>
+                </div>
+            </a>
+
+            <!-- Botón hamburguesa -->
+            <button class="navbar-toggler" type="button" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Menú colapsable -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#servicios">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#paquetes">Paquetes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#proveedores">Proveedores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#nosotros">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/galeria">Galería</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/noticias">Noticias</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#contacto">Contacto</a>
+                    </li>
+                </ul>
+
+                <!-- Botones de autenticación -->
+                <div class="d-flex ms-3">
+                    <!-- Usuario NO autenticado -->
+                    <div sec:authorize="!isAuthenticated()" class="d-flex gap-2">
+                        <a th:href="@{/login}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-sign-in-alt me-1"></i>Login
+                        </a>
+                        <a th:href="@{/register}" class="btn btn-warning btn-sm">
+                            <i class="fas fa-user-plus me-1"></i>Registro
+                        </a>
+                    </div>
+                    
+                    <!-- Usuario autenticado - CONTENEDOR CORREGIDO -->
+                    <div sec:authorize="isAuthenticated()" class="d-flex flex-column flex-md-row align-items-center gap-2">
+                        <!-- Nombre de usuario en línea separada en móviles -->
+                        <div class="text-center text-md-start mb-2 mb-md-0">
+                            <span class="text-primary fw-medium user-name">
+                                <i class="fas fa-user-circle me-1"></i>
+                                <span sec:authentication="name" class="user-email"></span>
+                            </span>
+                        </div>
+                        <form th:action="@{/logout}" method="post" class="m-0">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-sign-out-alt me-1"></i>Salir
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

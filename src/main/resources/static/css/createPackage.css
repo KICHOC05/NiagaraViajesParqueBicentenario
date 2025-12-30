@@ -1,0 +1,14 @@
+.main-content {
+         margin-left: 280px;
+         padding: 2rem;
+         min-height: 100vh;
+         background-color: #f8fafc;
+     }
+     
+     @media (max-width: 992px) {
+         .main-content {
+             margin-left: 0;
+             padding: 1rem;
+         }
+     }
+	 
