@@ -11,7 +11,8 @@
     <!-- Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-	<link th:href="@{/css/sidebar-fragment.css}" rel="stylesheet">
+<!-- Cambia de absoluta a relativa -->
+<div th:replace="~{fragments/sidebar-fragment :: sidebar}"></div>
 	<link th:href="@{/css/dashboard.css}" rel="stylesheet">
 	
 </head>
