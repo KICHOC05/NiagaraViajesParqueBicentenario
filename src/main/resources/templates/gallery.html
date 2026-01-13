@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de Viajes - Niagara Viajes Parque Bicentenario</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Library para animaciones -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- CSS principal (que incluye el navbar) -->
+	<link th:href="@{/css/main.css}" rel="stylesheet">
+	<link th:href="@{/css/header.css}" rel="stylesheet">
+	<link th:href="@{/css/galeria.css}" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Bar -->
+    <div class="loading-bar" id="loadingBar"></div>
+
+    <!-- Header / Navbar Fragment - MISMO QUE EL INDEX -->
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <!-- Hero Section -->
+    <section class="hero-section d-flex align-items-center">
+        <div class="container text-white text-center">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-10">
+                    <h1 class="display-4 fw-bold mb-4 animate-fade-in-up" data-aos="fade-up" data-aos-delay="200">
+                        Galería de <span class="text-accent-yellow">Experiencias</span>
+                    </h1>
+                    <p class="lead mb-5 fs-5" data-aos="fade-up" data-aos-delay="400">
+                        Descubre las aventuras inolvidables que nuestros clientes han vivido con nosotros. 
+                        Cada imagen cuenta una historia de felicidad y descubrimiento.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating elements for visual interest -->
+        <div class="position-absolute top-20 start-10 d-none d-lg-block">
+            <i class="fas fa-sun text-accent-yellow fa-2x opacity-25 floating-element"></i>
+        </div>
+        <div class="position-absolute bottom-20 end-10 d-none d-lg-block">
+            <i class="fas fa-cloud text-white fa-2x opacity-25 floating-element-delay"></i>
+        </div>
+    </section>
+
+    <!-- Introducción -->
+    <section class="intro-section">
+        <div class="container">
+            <div class="intro-content text-center" data-aos="fade-up">
+                <h2 class="fw-bold text-primary-blue mb-4">Nuestra Galería de Viajes</h2>
+                <p class="lead mb-4">
+                    En Niagara Viajes, no solo organizamos viajes, creamos experiencias que perduran en la memoria. 
+                    Cada fotografía en esta galería representa momentos especiales, sonrisas auténticas y aventuras 
+                    compartidas por nuestros queridos clientes.
+                </p>
+                <p class="mb-0">
+                    Estas imágenes son el testimonio de nuestro compromiso con la excelencia y la felicidad de quienes 
+                    confían en nosotros para hacer realidad sus sueños de viaje.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galería de Viajes - SOLO 6 EXPERIENCIAS -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <h2 class="text-center mb-5 fw-bold section-title text-primary-blue" data-aos="fade-up">
+                Momentos Inolvidables
+            </h2>
+            
+            <!-- Fila 1 (3 experiencias) -->
+            <div class="row g-4 mb-5">
+                <!-- Viaje 1 -->
+                <div class="col-12 col-md-6 col-lg-4 fade-in stagger-delay-1">
+                    <div class="gallery-item h-100" data-aos="fade-up">
+                        <div class="image-overlay">
+                            <img th:src="@{/images/galeria/xplor.jpg}" 
+                                 src="/images/galeria/xplor.jpg" 
+                                 class="gallery-image" 
+                                 alt="Xplor"
+                                 onerror="this.src='/images/galeria/default-trip.jpg'">
+                            <span class="image-tag">Xplor</span>
+                        </div>
+                        <div class="testimonial-content">
+                            <h4 class="client-name">Familia Lorenzana Paredes</h4>
+                            <div class="travel-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Playa del Carmen, México
+                            </div>
+                            <p class="testimonial-text">
+                                "Gracias por ayudarme a decidir el mejor lugar para celebrar el cumpleaños de mi hijo.
+                                En ese lugar pasamos aventuras inolvidables en ese lugar."
+                            </p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="travel-date">
+                                <i class="far fa-calendar me-1"></i> Diciembre 2024
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Viaje 2 -->
+                <div class="col-12 col-md-6 col-lg-4 fade-in stagger-delay-2">
+                    <div class="gallery-item h-100" data-aos="fade-up" data-aos-delay="100">
+                        <div class="image-overlay">
+                            <img th:src="@{/images/galeria/Museo.jpg}" 
+                                 src="/images/galeria/Museo.jpg" 
+                                 class="gallery-image" 
+                                 alt="Pareja en Europa"
+                                 onerror="this.src='/images/galeria/default-trip.jpg'">
+                            <span class="image-tag">Tour Europeo</span>
+                        </div>
+                        <div class="testimonial-content">
+                            <h4 class="client-name">Francisco Vargas</h4>
+                            <div class="travel-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Tour por Europa
+                            </div>
+                            <p class="testimonial-text">
+                                "Nuestro viaje de luna de miel por Europa superó todas nuestras expectativas. 
+                                Cada detalle estuvo cuidadosamente planeado. ¡Una experiencia que atesoraremos siempre!"
+                            </p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <div class="travel-date">
+                                <i class="far fa-calendar me-1"></i> Octubre 2024
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Viaje 3 -->
+                <div class="col-12 col-md-6 col-lg-4 fade-in stagger-delay-3">
+                    <div class="gallery-item h-100" data-aos="fade-up" data-aos-delay="200">
+                        <div class="image-overlay">
+                            <img th:src="@{/images/galeria/viaje3.jpg}" 
+                                 src="/images/galeria/viaje3.jpg" 
+                                 class="gallery-image" 
+                                 alt="Crucero en el Caribe"
+                                 onerror="this.src='/images/galeria/default-trip.jpg'">
+                            <span class="image-tag">Xcaret</span>
+                        </div>
+                        <div class="testimonial-content">
+                            <h4 class="client-name">Marco y Yadira</h4>
+                            <div class="travel-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Playa del Carmen, México
+                            </div>
+                            <p class="testimonial-text">
+                                "¡Excelente experiencia con la agencia Niágara! 
+                                Desde el primer contacto, nos trataron con amabilidad y profesionalismo. El itinerario que nos diseñaron superó nuestras expectativas, todo salió según lo planeado y los lugares que visitamos fueron increíbles."
+                            </p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="travel-date">
+                                <i class="far fa-calendar me-1"></i> Agosto 2024
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 2 (3 experiencias) -->
+            <div class="row g-4">
+                <!-- Viaje 4 -->
+                <div class="col-12 col-md-6 col-lg-4 fade-in stagger-delay-4">
+                    <div class="gallery-item h-100" data-aos="fade-up">
+                        <div class="image-overlay">
+                            <img th:src="@{/images/galeria/viaje4.jpg}" 
+                                 src="/images/galeria/viaje4.jpg" 
+                                 class="gallery-image" 
+                                 alt="Viaje a Italia"
+                                 onerror="this.src='/images/galeria/default-trip.jpg'">
+                            <span class="image-tag">Europa</span>
+                        </div>
+                        <div class="testimonial-content">
+                            <h4 class="client-name">Vicky y Paco</h4>
+                            <div class="travel-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Pisa, Italia
+                            </div>
+                            <p class="testimonial-text">
+                                "Nuestra experiencia con la 'Agencia Niagara Viajes' fue excelente, desde la primera cita en la que les expresamos nuestros requerimientos, ellos nos mandaron información y luego organizaron todos nuestros tours, que estuvieron geniales. Recibimos su apoyo en todo momento, aún durante el viaje, lo que agradecemos infinitamente. Fueron muy amables, gentiles y profesionales. Disfrutamos muchísimo nuestro viaje a Italia. Los recomendamos cien por ciento. Muchas gracias ❤"
+                            </p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="travel-date">
+                                <i class="far fa-calendar me-1"></i> Julio 2024
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Viaje 5 -->
+                <div class="col-12 col-md-6 col-lg-4 fade-in stagger-delay-5">
+                    <div class="gallery-item h-100" data-aos="fade-up" data-aos-delay="100">
+                        <div class="image-overlay">
+                            <img th:src="@{/images/galeria/viaje5.jpg}" 
+                                 src="/images/galeria/viaje5.jpg" 
+                                 class="gallery-image" 
+                                 alt="Viaje cultural"
+                                 onerror="this.src='/images/galeria/default-trip.jpg'">
+                            <span class="image-tag">Cultural</span>
+                        </div>
+                        <div class="testimonial-content">
+                            <h4 class="client-name">Tayna Collazo</h4>
+                            <div class="travel-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Globos Aerostaticos
+                            </div>
+                            <p class="testimonial-text">
+                                "Espectacular, un sueño hecho realidad"
+                            </p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="travel-date">
+                                <i class="far fa-calendar me-1"></i> Junio 2024
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Viaje 6 -->
+                <div class="col-12 col-md-6 col-lg-4 fade-in stagger-delay-6">
+                    <div class="gallery-item h-100" data-aos="fade-up" data-aos-delay="200">
+                        <div class="image-overlay">
+                            <img th:src="@{/images/galeria/viaje6.jpg}" 
+                                 src="/images/galeria/viaje6.jpg" 
+                                 class="gallery-image" 
+                                 alt="Relax en resort"
+                                 onerror="this.src='/images/galeria/default-trip.jpg'">
+                            <span class="image-tag">Viaje a Nickelodeon</span>
+                        </div>
+                        <div class="testimonial-content">
+                            <h4 class="client-name">Diego Mora</h4>
+                            <div class="travel-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Playa del Carmen 
+                            </div>
+                            <p class="testimonial-text">
+                                "Excelente trato tanto la logística 
+								la atención y la resolución de inconvenientes que se lleguen a presentar en  el viaje (temas externos clima etc)
+								2 viajes solicitados y los 2 Excelente 👌 las mejores vacaciones que hemos tenido" 
+                            </p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <div class="travel-date">
+                                <i class="far fa-calendar me-1"></i> Mayo 2024
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5 bg-primary-blue text-white">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8" data-aos="fade-up">
+                    <h2 class="fw-bold mb-4">¿Listo para crear tu propia historia?</h2>
+                    <p class="lead mb-4">
+                        Tu próxima aventura te espera. Déjanos ayudarte a crear recuerdos 
+                        que atesorarás para siempre, igual que nuestros clientes en esta galería.
+                    </p>
+                    <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
+                        <a href="/#contacto" class="btn btn-accent btn-lg px-4 px-md-5 py-3 rounded-pill shadow fw-bold">
+                            <i class="fas fa-calendar-check me-2"></i> Planificar mi Viaje
+                        </a>
+                        <a href="/#paquetes" class="btn btn-outline-light btn-lg px-4 px-md-5 py-3 rounded-pill shadow fw-bold">
+                            <i class="fas fa-suitcase me-2"></i> Ver Paquetes
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Fragment - MISMO QUE EL INDEX -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    
+    <!-- JavaScript: ORDEN CORRECTO -->
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	
+	<script th:src="@{/js/header.js}"></script>
+	
+    <!-- JavaScript personalizado -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar AOS
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100
+            });
+            
+            // Loading bar animation
+            const loadingBar = document.getElementById('loadingBar');
+            setTimeout(() => {
+                loadingBar.style.transform = 'scaleX(1)';
+            }, 100);
+            
+            setTimeout(() => {
+                loadingBar.style.transform = 'scaleX(0)';
+                setTimeout(() => {
+                    loadingBar.style.display = 'none';
+                }, 300);
+            }, 1000);
+            
+            // Animación de scroll para elementos fade-in
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const checkFadeElements = () => {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.classList.add('visible');
+                    }
+                });
+            };
+            
+            // Verificar elementos al cargar y al hacer scroll
+            window.addEventListener('scroll', checkFadeElements);
+            checkFadeElements(); // Verificar inicialmente
+            
+            // Preload de imágenes para evitar bugs visuales
+            const preloadImages = () => {
+                const imageUrls = [
+                    '/images/galeria/xplor.jpg',
+                    '/images/galeria/Museo.jpg',
+                    '/images/galeria/viaje3.jpg',
+                    '/images/galeria/viaje4.jpg',
+                    '/images/galeria/viaje5.jpg',
+                    '/images/galeria/viaje6.jpg',
+                    '/images/galeria/default-trip.jpg'
+                ];
+                
+                imageUrls.forEach(url => {
+                    const img = new Image();
+                    img.src = url;
+                });
+            };
+            
+            // Ejecutar preload después de un tiempo
+            setTimeout(preloadImages, 1000);
+            
+            // IMPORTANTE: Smooth scrolling para enlaces internos
+            document.querySelectorAll('a[href^="/#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    
+                    // Solo para enlaces que van al index con hash
+                    if (href.startsWith('/#')) {
+                        e.preventDefault();
+                        window.location.href = href;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

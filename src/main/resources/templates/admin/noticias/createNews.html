@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Noticia - Niagara Viajes</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link th:href="@{/css/sidebar-fragment.css}" rel="stylesheet">
+	<link th:href="@{/css/createNews.css}" rel="stylesheet">
+   
+</head>
+<body>
+    <!-- Contenedor principal -->
+    <div class="main-container">
+        <!-- Incluir Sidebar -->
+        <div th:replace="fragments/sidebar-fragment :: sidebar(activeSection='noticias')"></div>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Mensajes Flash -->
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show flash-message mb-4" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                <span th:text="${success}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show flash-message mb-4" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div class="content-header">
+                <div>
+                    <h1 class="h3">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Crear Nueva Noticia
+                    </h1>
+                    <div class="text-muted">Complete la información de la noticia</div>
+                </div>
+                <div class="mt-2 mt-md-0">
+                    <a th:href="@{/admin/noticias/newsList}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Volver a la Lista
+                    </a>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Información de la Noticia
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- ¡IMPORTANTE: Añadir novalidate al formulario! -->
+                    <form th:action="@{/admin/noticias/createNews}" 
+                          th:object="${noticiaDTO}" 
+                          method="post"
+                          id="noticiaForm"
+                          novalidate>
+                        
+                        <!-- Título -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Título de la Noticia <span class="text-danger">*</span></label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   th:field="*{titulo}"
+                                   placeholder="Ej: Nuevas Rutas de Vuelo a Europa"
+                                   id="tituloInput"
+                                   maxlength="150">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('titulo')}">
+                                <span th:errors="*{titulo}"></span>
+                            </div>
+                            <div class="form-text text-end">
+                                <span id="tituloCounter">0</span>/150 caracteres
+                            </div>
+                        </div>
+
+                        <!-- URL de la Imagen -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">URL de la Imagen</label>
+                            <input type="url" 
+                                   class="form-control" 
+                                   th:field="*{imagenUrl}"
+                                   placeholder="https://ejemplo.com/noticia.jpg"
+                                   id="imagenUrl"
+                                   maxlength="500">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('imagenUrl')}">
+                                <span th:errors="*{imagenUrl}"></span>
+                            </div>
+                            <div class="form-text">Opcional. URL de la imagen principal. Dejar en blanco para usar imagen por defecto.</div>
+                        </div>
+
+                        <!-- Contenido -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Contenido de la Noticia <span class="text-danger">*</span></label>
+                            <textarea class="form-control" 
+                                      th:field="*{contenido}"
+                                      rows="6" 
+                                      placeholder="Escriba aquí el contenido completo de la noticia..."
+                                      id="contenidoNoticia"></textarea>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('contenido')}">
+                                <span th:errors="*{contenido}"></span>
+                            </div>
+                            <div class="form-text text-end">
+                                <span id="contenidoCounter">0</span> caracteres
+                            </div>
+                        </div>
+
+                        <!-- Enlace de Facebook -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="fab fa-facebook me-1 text-primary"></i>
+                                Enlace de Facebook
+                            </label>
+                            <input type="url" 
+                                   class="form-control" 
+                                   th:field="*{enlaceFacebook}"
+                                   placeholder="https://www.facebook.com/tupagina/posts/123456789"
+                                   id="facebookLink"
+                                   maxlength="500">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('enlaceFacebook')}">
+                                <span th:errors="*{enlaceFacebook}"></span>
+                            </div>
+                            <div class="form-text">Opcional. Enlace a la publicación en Facebook.</div>
+                        </div>
+
+                        <!-- Texto de Facebook -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="fab fa-facebook me-1 text-primary"></i>
+                                Texto de la Publicación en Facebook
+                            </label>
+                            <textarea class="form-control" 
+                                      th:field="*{textoFacebook}"
+                                      rows="3" 
+                                      placeholder="Texto que apareció en la publicación de Facebook..."
+                                      id="facebookText"
+                                      maxlength="500"></textarea>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('textoFacebook')}">
+                                <span th:errors="*{textoFacebook}"></span>
+                            </div>
+                            <div class="form-text text-end">
+                                <span id="facebookTextCounter">0</span>/500 caracteres
+                            </div>
+                        </div>
+
+                        <!-- Opciones -->
+                        <div class="row mb-4">
+                            <div class="col-lg-6 mb-3 mb-lg-0">
+                                <div class="form-check form-switch d-flex align-items-center">
+                                    <input class="form-check-input" 
+                                           type="checkbox" 
+                                           th:field="*{destacada}"
+                                           id="destacadaSwitch">
+                                    <label class="form-check-label fw-bold ms-2" for="destacadaSwitch">
+                                        <i class="fas fa-star me-1 text-warning"></i>
+                                        Marcar como Destacada
+                                    </label>
+                                </div>
+                                <small class="d-block text-muted ms-5 ps-2 mt-1">
+                                    Las noticias destacadas aparecen en lugares especiales del sitio.
+                                </small>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-check form-switch d-flex align-items-center">
+                                    <input class="form-check-input" 
+                                           type="checkbox" 
+                                           th:field="*{activa}"
+                                           checked
+                                           id="activaSwitch">
+                                    <label class="form-check-label fw-bold ms-2" for="activaSwitch">
+                                        <i class="fas fa-eye me-1 text-success"></i>
+                                        Publicar Inmediatamente
+                                    </label>
+                                </div>
+                                <small class="d-block text-muted ms-5 ps-2 mt-1">
+                                    Desmarque para guardar como borrador.
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Vista Previa -->
+                        <div class="card border-info mb-4">
+                            <div class="card-header bg-info text-white">
+                                <h6 class="card-title mb-0">
+                                    <i class="fas fa-eye me-2"></i>
+                                    Vista Previa
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="previewContent" class="preview-content">
+                                    <div class="text-center text-muted py-4">
+                                        <i class="fas fa-newspaper fa-3x mb-3"></i>
+                                        <p>La vista previa se generará automáticamente<br>conforme complete los campos.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between pt-3 border-top">
+                            <a th:href="@{/admin/noticias/newsList}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Crear Noticia
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Scripts personlizados limpios -->
+    <script>
+        // Contadores de caracteres
+        function setupCharacterCounters() {
+            const tituloInput = document.getElementById('tituloInput');
+            const contenidoInput = document.getElementById('contenidoNoticia');
+            const facebookText = document.getElementById('facebookText');
+            
+            if (tituloInput) {
+                const tituloCounter = document.getElementById('tituloCounter');
+                tituloInput.addEventListener('input', function() {
+                    tituloCounter.textContent = this.value.length;
+                });
+                tituloCounter.textContent = tituloInput.value.length;
+            }
+            
+            if (contenidoInput) {
+                const contenidoCounter = document.getElementById('contenidoCounter');
+                contenidoInput.addEventListener('input', function() {
+                    contenidoCounter.textContent = this.value.length;
+                });
+                contenidoCounter.textContent = contenidoInput.value.length;
+            }
+            
+            if (facebookText) {
+                const facebookTextCounter = document.getElementById('facebookTextCounter');
+                facebookText.addEventListener('input', function() {
+                    facebookTextCounter.textContent = this.value.length;
+                });
+                facebookTextCounter.textContent = facebookText.value.length;
+            }
+        }
+        
+        // Vista previa en tiempo real
+        function setupLivePreview() {
+            const tituloInput = document.getElementById('tituloInput');
+            const contenidoInput = document.getElementById('contenidoNoticia');
+            const imagenUrlInput = document.getElementById('imagenUrl');
+            const previewContent = document.getElementById('previewContent');
+            
+            function updatePreview() {
+                const titulo = tituloInput.value || 'Título de la noticia';
+                const contenido = contenidoInput.value || 'Contenido de la noticia...';
+                const imagenUrl = imagenUrlInput.value || 'https://via.placeholder.com/800x400/4a6fa5/ffffff?text=Niagara+Viajes';
+                
+                let previewHTML = `
+                    <div class="preview-loading">
+                        <h4 class="mb-3">${titulo}</h4>
+                        <div class="mb-3">
+                            <img src="${imagenUrl}" alt="Imagen de noticia" class="img-fluid rounded" style="max-height: 200px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/800x400/4a6fa5/ffffff?text=Niagara+Viajes'">
+                        </div>
+                        <p>${contenido.substring(0, 300)}${contenido.length > 300 ? '...' : ''}</p>
+                        <div class="mt-3">
+                            <span class="badge bg-primary me-2">Noticia</span>
+                            <small class="text-muted"><i class="far fa-calendar me-1"></i>Publicada recientemente</small>
+                        </div>
+                    </div>
+                `;
+                
+                previewContent.innerHTML = previewHTML;
+            }
+            
+            // Actualizar vista previa al escribir
+            [tituloInput, contenidoInput, imagenUrlInput].forEach(input => {
+                if (input) {
+                    input.addEventListener('input', updatePreview);
+                }
+            });
+            
+            // Inicializar vista previa
+            updatePreview();
+        }
+        
+        // Validación de formulario - SIMPLIFICADA
+        function setupFormValidation() {
+            const form = document.getElementById('noticiaForm');
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    let hasErrors = false;
+                    
+                    // Validar título (mínimo 5 caracteres)
+                    const tituloInput = document.getElementById('tituloInput');
+                    if (tituloInput) {
+                        const tituloValue = tituloInput.value.trim();
+                        if (tituloValue.length < 5) {
+                            tituloInput.classList.add('is-invalid');
+                            hasErrors = true;
+                        } else {
+                            tituloInput.classList.remove('is-invalid');
+                        }
+                    }
+                    
+                    // Validar contenido (mínimo 50 caracteres)
+                    const contenidoInput = document.getElementById('contenidoNoticia');
+                    if (contenidoInput) {
+                        const contenidoValue = contenidoInput.value.trim();
+                        if (contenidoValue.length < 50) {
+                            contenidoInput.classList.add('is-invalid');
+                            hasErrors = true;
+                        } else {
+                            contenidoInput.classList.remove('is-invalid');
+                        }
+                    }
+                    
+                    if (hasErrors) {
+                        event.preventDefault();
+                    }
+                    
+                    form.classList.add('was-validated');
+                });
+            }
+        }
+        
+        // Inicializar cuando el DOM esté cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            setupCharacterCounters();
+            setupLivePreview();
+            setupFormValidation();
+        });
+    </script>
+</body>
+</html>

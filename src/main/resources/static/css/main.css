@@ -1,0 +1,910 @@
+:root {
+    --primary-blue: #1e40af;
+    --secondary-blue: #3b82f6;
+    --accent-yellow: #fbbf24;
+    --light-yellow: #fef3c7;
+}
+
+/* Animaciones personalizadas */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) rotate(30deg); }
+    100% { transform: translateX(100%) rotate(30deg); }
+}
+
+@keyframes modalEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.animate-pulse-slow {
+    animation: pulse 3s infinite;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.hero-section {
+    background-image: linear-gradient(rgba(30, 64, 175, 0.7), rgba(30, 64, 175, 0.7)), url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+}
+
+.card-hover {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-hover:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.provider-logo {
+    height: 70px;
+    object-fit: contain;
+    filter: grayscale(100%);
+    transition: all 0.3s ease;
+    padding: 10px;
+}
+
+.provider-logo:hover {
+    filter: grayscale(0%);
+    transform: scale(1.1);
+}
+
+.bg-primary-blue {
+    background-color: var(--primary-blue);
+}
+
+.bg-accent-yellow {
+    background-color: var(--accent-yellow);
+}
+
+.text-primary-blue {
+    color: var(--primary-blue);
+}
+
+.text-accent-yellow {
+    color: var(--accent-yellow);
+}
+
+.btn-primary-custom {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: white;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary-custom:hover {
+    background-color: var(--secondary-blue);
+    border-color: var(--secondary-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(30, 64, 175, 0.3);
+}
+
+.btn-accent {
+    background-color: var(--accent-yellow);
+    border-color: var(--accent-yellow);
+    color: #1f2937;
+    transition: all 0.3s ease;
+}
+
+.btn-accent:hover {
+    background-color: #f59e0b;
+    border-color: #f59e0b;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(251, 191, 36, 0.3);
+}
+
+.section-title {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 2rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background-color: var(--accent-yellow);
+}
+
+.package-card {
+    border-radius: 15px;
+    overflow: hidden;
+    border: none;
+    transition: all 0.4s ease;
+}
+
+.package-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* PRECIO CON "DESDE" DENTRO DE LA ETIQUETA AMARILLA - ESTÉTICO */
+.package-price {
+    background-color: var(--accent-yellow);
+    color: #1f2937;
+    padding: 12px 20px 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    animation: pulse 2s infinite;
+    font-size: 1rem;
+    position: relative;
+    min-width: 110px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(251, 191, 36, 0.3);
+}
+
+.price-from {
+    font-size: 0.75rem;
+    color: rgba(31, 41, 55, 0.8);
+    font-weight: 600;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.price-amount {
+    font-size: 1.1rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.testimonial-card {
+    border-left: 4px solid var(--accent-yellow);
+    transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateX(5px);
+}
+
+.footer-custom {
+    background-color: #1e293b;
+    color: white;
+}
+
+.service-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    box-shadow: 0 5px 15px rgba(30, 64, 175, 0.3);
+}
+
+.service-icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+.loading-bar {
+    height: 3px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--primary-blue), var(--accent-yellow));
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.floating-element {
+    animation: float 6s ease-in-out infinite;
+}
+
+.floating-element-delay {
+    animation: float 6s ease-in-out infinite 2s;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.stagger-animation > * {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.stagger-animation > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger-animation > *:nth-child(2) { animation-delay: 0.2s; }
+.stagger-animation > *:nth-child(3) { animation-delay: 0.3s; }
+.stagger-animation > *:nth-child(4) { animation-delay: 0.4s; }
+.stagger-animation > *:nth-child(5) { animation-delay: 0.5s; }
+.stagger-animation > *:nth-child(6) { animation-delay: 0.6s; }
+
+/* ESTILOS PARA EL MODAL MEJORADO */
+.modal-package-header {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    color: white;
+    padding: 2rem 1.5rem;
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-package-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0,0 L1000,0 L1000,100 Q500,80 0,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+    background-size: cover;
+    opacity: 0.2;
+}
+
+.modal-package-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.modal-package-subtitle {
+    font-size: 1rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+}
+
+.modal-close-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 2;
+}
+
+.modal-close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+.modal-package-image-container {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    margin-top: -30px;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    z-index: 2;
+}
+
+.modal-package-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.modal-package-image:hover {
+    transform: scale(1.05);
+}
+
+.modal-package-price-tag {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, var(--accent-yellow), #f59e0b);
+    color: #1f2937;
+    padding: 14px 24px 12px 24px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 1.3rem;
+    box-shadow: 0 5px 15px rgba(251, 191, 36, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: float 3s ease-in-out infinite;
+    position: relative;
+    min-width: 140px;
+}
+
+.modal-price-from {
+    font-size: 0.8rem;
+    color: rgba(31, 41, 55, 0.9);
+    font-weight: 600;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modal-price-amount {
+    font-size: 1.4rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.modal-package-body {
+    padding: 2rem 1.5rem;
+}
+
+.modal-package-description {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #4b5563;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-radius: 10px;
+    border-left: 4px solid var(--accent-yellow);
+}
+
+.package-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.package-feature-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid #e5e7eb;
+}
+
+.package-feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-blue);
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.feature-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 0.25rem;
+}
+
+.feature-label {
+    font-size: 0.85rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.whatsapp-btn-enhanced {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex: 1;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-btn-enhanced:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+    background: linear-gradient(135deg, #128C7E, #25D366);
+}
+
+.secondary-btn {
+    background: white;
+    color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex: 1;
+    transition: all 0.3s ease;
+}
+
+.secondary-btn:hover {
+    background: var(--primary-blue);
+    color: white;
+    transform: translateY(-3px);
+}
+
+.modal.fade .modal-dialog {
+    animation: modalEntrance 0.5s ease-out;
+}
+
+.price-shine {
+    position: relative;
+    overflow: hidden;
+}
+
+.price-shine::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 100%
+    );
+    transform: rotate(30deg);
+    animation: shine 3s infinite linear;
+}
+
+.user-welcome {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    color: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+}
+
+.card-title {
+    min-height: 3rem;
+    display: flex;
+    align-items: center;
+}
+
+.btn {
+    border-radius: 8px;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    padding: 0.75rem 1rem;
+}
+
+.form-control:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+}
+
+/* Estilos para las imágenes de testimonios */
+.testimonial-card .rounded-circle {
+    border: 3px solid var(--primary-blue);
+    transition: all 0.3s ease;
+}
+
+.testimonial-card:hover .rounded-circle {
+    transform: scale(1.1);
+    border-color: var(--accent-yellow);
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .hero-section {
+        background-attachment: scroll;
+        min-height: 80vh;
+        text-align: center;
+        padding-top: 80px;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-section .lead {
+        font-size: 1rem;
+    }
+    
+    .provider-logo {
+        height: 50px;
+        margin: 10px 0;
+    }
+    
+    .carousel-control-prev, .carousel-control-next {
+        display: none;
+    }
+    
+    .section-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .package-card {
+        margin-bottom: 20px;
+    }
+    
+    .btn-lg {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .testimonial-card {
+        margin-bottom: 20px;
+    }
+    
+    .carousel-control-prev-icon, 
+    .carousel-control-next-icon {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .service-icon {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .service-icon i {
+        font-size: 1.7rem;
+    }
+    
+    .package-price {
+        padding: 10px 15px 8px 15px;
+        min-width: 100px;
+    }
+    
+    .price-from {
+        font-size: 0.7rem;
+    }
+    
+    .price-amount {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-package-header {
+        padding: 1.5rem 1rem;
+    }
+    
+    .modal-package-title {
+        font-size: 1.5rem;
+    }
+    
+    .modal-package-image-container {
+        margin-top: -20px;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+    
+    .modal-package-image {
+        height: 200px;
+    }
+    
+    .modal-package-price-tag {
+        padding: 12px 20px 10px 20px;
+        font-size: 1.1rem;
+        bottom: 15px;
+        right: 15px;
+        min-width: 120px;
+    }
+    
+    .modal-package-body {
+        padding: 1.5rem 1rem;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .package-features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .modal-price-from {
+        font-size: 0.7rem;
+    }
+    
+    .modal-price-amount {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section h1 {
+        font-size: 1.75rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .btn-group-vertical {
+        width: 100%;
+    }
+    
+    .brand-logo {
+        height: 35px;
+    }
+    
+    .package-price {
+        font-size: 0.9rem;
+        padding: 8px 12px 6px 12px;
+        min-width: 90px;
+    }
+    
+    .price-from {
+        font-size: 0.65rem;
+    }
+    
+    .price-amount {
+        font-size: 0.95rem;
+    }
+    
+    .modal-package-header {
+        text-align: center;
+        padding: 1.5rem 1rem 2.5rem;
+    }
+    
+    .modal-package-title {
+        font-size: 1.3rem;
+    }
+    
+    .modal-package-image-container {
+        margin-top: -25px;
+    }
+    
+    .modal-package-price-tag {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        margin: -15px auto 0;
+        width: fit-content;
+    }
+    
+    .package-features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-close-btn {
+        top: 15px;
+        right: 15px;
+    }
+    
+    .modal-price-from {
+        font-size: 0.65rem;
+    }
+    
+    .modal-price-amount {
+        font-size: 1.1rem;
+    }
+}
+/* Estilos inline adicionales para asegurar funcionalidad */
+   .navbar-collapse {
+       background-color: transparent !important;
+   }
+   
+   @media (max-width: 991px) {
+       .navbar-collapse.show {
+           background-color: white !important;
+       }
+   }
+   
+   /* Asegurar que los iconos se muestren */
+   .fas, .fab, .far {
+       display: inline-block !important;
+   }
+   
+   /* ESTILOS ESPECÍFICOS PARA LOGOS DE PROVEEDORES */
+   .carousel-item .col-6 {
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       min-height: 120px;
+       padding: 15px 5px;
+   }
+   
+   .provider-logo {
+       max-height: 70px;
+       width: auto;
+       max-width: 180px;
+       object-fit: contain;
+       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+       filter: grayscale(100%);
+       opacity: 0.8;
+       background-color: transparent;
+       border-radius: 4px;
+       padding: 8px;
+       display: block;
+       margin: 0 auto;
+   }
+   
+   .provider-logo:hover {
+       transform: scale(1.1);
+       filter: grayscale(0%);
+       opacity: 1;
+       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+   }
+   
+   /* Específico para Julia Travel */
+   img[src*="juliatravel-logo"],
+   img[src*="juliatravel"],
+   img[alt*="Julia Travel"],
+   img[alt*="Julia"] {
+       max-height: 65px !important;
+       background-color: white !important;
+       padding: 12px !important;
+       border-radius: 8px !important;
+       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+       border: 1px solid rgba(0, 0, 0, 0.05) !important;
+   }
+   
+   /* Para logos PNG */
+   .provider-logo[src*=".png"] {
+       background-color: white;
+       padding: 10px;
+   }
+   
+   /* Para móviles */
+   @media (max-width: 768px) {
+       .provider-logo {
+           max-height: 50px;
+           max-width: 120px;
+       }
+       
+       img[src*="juliatravel-logo"],
+       img[src*="juliatravel"],
+       img[alt*="Julia Travel"] {
+           max-height: 45px !important;
+           padding: 8px !important;
+       }
+       
+       .carousel-item .col-6 {
+           min-height: 100px;
+       }
+   }
+   
+   @media (max-width: 576px) {
+       .provider-logo {
+           max-height: 40px;
+           max-width: 100px;
+       }
+       
+       img[src*="juliatravel-logo"],
+       img[src*="juliatravel"],
+       img[alt*="Julia Travel"] {
+           max-height: 35px !important;
+           padding: 6px !important;
+       }
+       
+       .carousel-item .col-6 {
+           min-height: 80px;
+           padding: 10px 5px;
+       }
+   }
+   /* Asegurar que navbar funcione */
+   .navbar {
+       z-index: 1030;
+   }
+
+   /* Loading bar */
+   .loading-bar {
+       height: 3px;
+       width: 100%;
+       background: linear-gradient(90deg, #1e40af, #fbbf24);
+       position: fixed;
+       top: 0;
+       left: 0;
+       z-index: 9999;
+       transform: scaleX(0);
+       transform-origin: left;
+       transition: transform 0.3s ease;
+   }
+
+   /* Para secciones con IDs para scroll suave */
+   section {
+       scroll-margin-top: 80px;
+   }
+
+   /* Asegurar que botones sean visibles */
+   .btn {
+       display: inline-flex !important;
+       align-items: center !important;
+       justify-content: center !important;
+       white-space: nowrap !important;
+   }
+
+   /* Asegurar que iconos sean visibles */
+   .fas, .fab, .far {
+       display: inline-block !important;
+   }
+
+   /* Debug: si aún no ves los botones, añade esto temporalmente */
+   .debug-buttons {
+       border: 2px solid red !important;
+       background-color: yellow !important;
+   }

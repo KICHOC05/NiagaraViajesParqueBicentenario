@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Paquete - Niagara Viajes</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link th:href="@{/css/sidebar-fragment.css}" rel="stylesheet">
+    <link th:href="@{/css/createPackage.css}" rel="stylesheet">
+    
+    <style>
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            transition: margin-left 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            border-radius: 12px 12px 0 0 !important;
+            padding: 1.25rem;
+        }
+
+        .form-control, .input-group-text {
+            border-radius: 8px;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+            border-color: #ffc107;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107, #ffb300);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .btn-warning:hover {
+            background: linear-gradient(135deg, #ffb300, #ffa000);
+            transform: translateY(-1px);
+        }
+
+        .img-preview {
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .img-preview:hover {
+            transform: scale(1.02);
+        }
+
+        .char-count {
+            font-size: 0.875rem;
+        }
+
+        .required-field::after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group-text {
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Incluir Sidebar -->
+    <div th:replace="fragments/sidebar-fragment :: sidebar(activeSection='paquetes')"></div>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Alertas -->
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="content-header">
+            <div class="flex-grow-1">
+                <h1 class="h3 mb-2">
+                    <i class="fas fa-edit me-2 text-warning"></i>
+                    Editar Paquete
+                </h1>
+                <p class="text-muted mb-0">Modifique la información del paquete turístico</p>
+            </div>
+            <div>
+                <a th:href="@{/admin/packages/packageList}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Volver a la Lista
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Editar Información del Paquete
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Vista previa de la imagen actual -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Imagen Actual</label>
+                        <div class="text-center">
+                            <img th:src="${paqueteDto.imagenUrl}" 
+                                 alt="Imagen del paquete" 
+                                 class="img-preview"
+                                 id="imagePreview"
+                                 onerror="this.src='https://via.placeholder.com/400x200/1e40af/ffffff?text=Imagen+No+Disponible'">
+                            <div class="mt-2">
+                                <small class="text-muted">Imagen actual del paquete - Se actualizará automáticamente al cambiar la URL</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form th:action="@{/admin/packages/updatePackage/{id}(id=${paqueteDto.id})}" 
+                      th:object="${paqueteDto}" 
+                      method="post">
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold required-field">Título del Paquete</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   th:field="*{titulo}"
+                                   placeholder="Ej: Cancún Todo Incluido 5 Días"
+                                   required>
+                            <div class="text-danger mt-1" th:if="${#fields.hasErrors('titulo')}">
+                                <small th:errors="*{titulo}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold required-field">Precio</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" 
+                                       class="form-control" 
+                                       th:field="*{precio}"
+                                       placeholder="0.00"
+                                       step="0.01"
+                                       min="0.01"
+                                       required>
+                            </div>
+                            <div class="text-danger mt-1" th:if="${#fields.hasErrors('precio')}">
+                                <small th:errors="*{precio}"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold required-field">URL de la Imagen</label>
+                        <input type="url" 
+                               class="form-control" 
+                               th:field="*{imagenUrl}"
+                               placeholder="https://ejemplo.com/imagen.jpg"
+                               id="imageUrlInput"
+                               required>
+                        <div class="text-danger mt-1" th:if="${#fields.hasErrors('imagenUrl')}">
+                            <small th:errors="*{imagenUrl}"></small>
+                        </div>
+                        <div class="form-text">
+                            <small>Ingrese una nueva URL para cambiar la imagen del paquete</small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold required-field">Días de Viaje</label>
+                            <input type="number" 
+                                   class="form-control" 
+                                   th:field="*{dias}"
+                                   placeholder="5"
+                                   min="1"
+                                   required>
+                            <div class="text-danger mt-1" th:if="${#fields.hasErrors('dias')}">
+                                <small th:errors="*{dias}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold required-field">Noches de Estancia</label>
+                            <input type="number" 
+                                   class="form-control" 
+                                   th:field="*{noches}"
+                                   placeholder="4"
+                                   min="0"
+                                   required>
+                            <div class="text-danger mt-1" th:if="${#fields.hasErrors('noches')}">
+                                <small th:errors="*{noches}"></small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold required-field">Número de Personas</label>
+                            <input type="number" 
+                                   class="form-control" 
+                                   th:field="*{personas}"
+                                   placeholder="2"
+                                   min="1"
+                                   required>
+                            <div class="text-danger mt-1" th:if="${#fields.hasErrors('personas')}">
+                                <small th:errors="*{personas}"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold required-field">Descripción</label>
+                        <textarea class="form-control" 
+                                  th:field="*{descripcion}"
+                                  rows="5" 
+                                  placeholder="Describe los detalles del paquete, servicios incluidos, actividades, etc."
+                                  maxlength="500"
+                                  id="descriptionInput"
+                                  required></textarea>
+                        <div class="char-count text-muted mt-1">
+                            <span id="charCount" th:text="${#strings.length(paqueteDto.descripcion)}">0</span>/500 caracteres
+                        </div>
+                        <div class="text-danger mt-1" th:if="${#fields.hasErrors('descripcion')}">
+                            <small th:errors="*{descripcion}"></small>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between pt-4 border-top mt-4">
+                        <a th:href="@{/admin/packages/packageList}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-save me-2"></i>Actualizar Paquete
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Contador de caracteres
+        const descripcion = document.getElementById('descriptionInput');
+        const charCount = document.getElementById('charCount');
+        
+        if (descripcion) {
+            descripcion.addEventListener('input', function() {
+                charCount.textContent = this.value.length;
+            });
+        }
+
+        // Vista previa de imagen en tiempo real
+        const imagenUrlInput = document.getElementById('imageUrlInput');
+        const imagenPreview = document.getElementById('imagePreview');
+        
+        if (imagenUrlInput && imagenPreview) {
+            imagenUrlInput.addEventListener('input', function() {
+                if (this.value) {
+                    imagenPreview.src = this.value;
+                }
+            });
+        }
+
+        // Validación de formulario
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const requiredFields = this.querySelectorAll('[required]');
+            let valid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    valid = false;
+                    field.classList.add('is-invalid');
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+
+            if (!valid) {
+                e.preventDefault();
+                // Mostrar alerta si hay campos vacíos
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-warning alert-dismissible fade show mt-3';
+                alertDiv.innerHTML = `
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Por favor, complete todos los campos requeridos.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                this.prepend(alertDiv);
+            }
+        });
+
+        // Auto-hide alerts after 5 seconds
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    </script>
+    
+    <script th:src="@{/js/sidebar-fragment.js}"></script>
+</body>
+</html>

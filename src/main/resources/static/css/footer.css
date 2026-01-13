@@ -1,0 +1,27 @@
+.footer-custom {
+    background-color: #1e293b !important;
+    color: white !important;
+}
+
+.footer-custom h5,
+.footer-custom h6 {
+    color: white !important;
+}
+
+.footer-custom p,
+.footer-custom small {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.footer-custom a {
+    color: rgba(255, 255, 255, 0.9) !important;
+    transition: color 0.3s ease;
+}
+
+.footer-custom a:hover {
+    color: var(--accent-yellow) !important;
+}
+
+.footer-custom .text-accent-yellow {
+    color: var(--accent-yellow) !important;
+}

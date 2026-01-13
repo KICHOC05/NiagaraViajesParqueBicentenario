@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Meta tags se heredan del template principal -->
+</head>
+<body>
+    <div th:fragment="package-modal">
+        <!-- Modal para Detalles del Paquete -->
+        <div class="modal fade" id="packageModal" tabindex="-1" aria-labelledby="packageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content overflow-hidden">
+                    <!-- Header mejorado con gradiente -->
+                    <div class="modal-package-header">
+                        <button type="button" class="modal-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <h5 class="modal-package-title" id="packageModalLabel">
+                            <i class="fas fa-suitcase me-2"></i>
+                            Detalles del Paquete
+                        </h5>
+                        <div class="modal-package-subtitle">
+                            ¡Tu aventura perfecta te espera!
+                        </div>
+                    </div>
+                    
+                    <!-- Contenedor de imagen con precio flotante -->
+                    <div class="modal-package-image-container">
+                        <img id="modalPackageImage" 
+                             src="" 
+                             alt="Imagen del paquete" 
+                             class="modal-package-image"
+                             onerror="this.src='https://via.placeholder.com/800x400/1e40af/ffffff?text=Imagen+No+Disponible'">
+                        
+                        <!-- Etiqueta de precio flotante CON "DESDE" DENTRO -->
+                        <div class="modal-package-price-tag price-shine">
+                            <div class="modal-price-from">desde</div>
+                            <div class="modal-price-amount" id="modalPackagePrice">$0.00</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cuerpo del modal -->
+                    <div class="modal-package-body">
+                        <!-- Título del paquete -->
+                        <h4 id="modalPackageTitle" class="fw-bold text-primary-blue mb-3"></h4>
+                        
+                        <!-- Descripción -->
+                        <div class="modal-package-description">
+                            <p id="modalPackageDescription"></p>
+                        </div>
+                        
+                        <!-- Características del paquete en grid -->
+                        <div class="package-features-grid">
+                            <div class="package-feature-card" data-aos="fade-up" data-aos-delay="100">
+                                <div class="feature-icon">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="feature-value" id="modalPackageDays">0</div>
+                                <div class="feature-label">Días</div>
+                            </div>
+                            
+                            <div class="package-feature-card" data-aos="fade-up" data-aos-delay="200">
+                                <div class="feature-icon">
+                                    <i class="fas fa-moon"></i>
+                                </div>
+                                <div class="feature-value" id="modalPackageNights">0</div>
+                                <div class="feature-label">Noches</div>
+                            </div>
+                            
+                            <div class="package-feature-card" data-aos="fade-up" data-aos-delay="300">
+                                <div class="feature-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="feature-value" id="modalPackagePeople">0</div>
+                                <div class="feature-label">Personas</div>
+                            </div>
+                            
+                            <div class="package-feature-card" data-aos="fade-up" data-aos-delay="400">
+                                <div class="feature-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="feature-value">Todo Incluido</div>
+                                <div class="feature-label">Tipo de Paquete</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Botones de acción -->
+                        <div class="modal-actions" data-aos="fade-up" data-aos-delay="200">
+                            <button type="button" class="whatsapp-btn-enhanced" onclick="reservarWhatsAppFromModal()">
+                                <i class="fab fa-whatsapp fa-lg"></i>
+                                Reservar por WhatsApp
+                            </button>
+                            <button type="button" class="secondary-btn" data-bs-dismiss="modal">
+                                <i class="fas fa-times"></i>
+                                Cerrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

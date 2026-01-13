@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Niagara Viajes</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Sidebar CSS -->
+    <link th:href="@{/css/sidebar-fragment.css}" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --secondary-blue: #3b82f6;
+            --sidebar-width: 280px;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            min-height: 100vh;
+        }
+        
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+        
+        .content-header {
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-subtitle {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .profile-header {
+            background: linear-gradient(90deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            padding: 2rem;
+            color: white;
+        }
+        
+        .profile-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .profile-email {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .profile-body {
+            padding: 2rem;
+        }
+        
+        .info-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .info-item {
+            margin-bottom: 1.25rem;
+        }
+        
+        .info-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-value {
+            font-size: 1rem;
+            color: #1f2937;
+            font-weight: 500;
+            padding: 0.75rem;
+            background: #f9fafb;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-blue);
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-value-empty {
+            color: #9ca3af;
+            font-style: italic;
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .role-admin {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .role-client {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .role-agent {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .back-button {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 992px) {
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .profile-header {
+                padding: 1.5rem;
+            }
+            
+            .profile-body {
+                padding: 1.5rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+	<div th:replace="fragments/sidebar-fragment :: sidebar(activeSection='perfil')"></div>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <div class="content-header">
+            <div>
+                <h1 class="page-title">
+                    <i class="fas fa-user-circle me-2"></i>
+                    Mi Perfil
+                </h1>
+                <p class="page-subtitle">
+                    Información personal de tu cuenta
+                </p>
+            </div>
+        </div>
+        
+        <!-- Profile Card -->
+        <div class="profile-card">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <h2 class="profile-name" th:text="${appUser.nombre != null ? appUser.nombre + ' ' + (appUser.apellido != null ? appUser.apellido : '') : 'Usuario'}">
+                    Usuario
+                </h2>
+                <div class="profile-email">
+                    <i class="fas fa-envelope me-2"></i>
+                    <span th:text="${appUser.email != null ? appUser.email : 'Correo no disponible'}">
+                        usuario@ejemplo.com
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Profile Body -->
+            <div class="profile-body">
+                <!-- Información Personal -->
+                <div class="info-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-user me-2"></i>
+                        Información Personal
+                    </h3>
+                    <div class="info-grid">
+                        <!-- Nombre -->
+                        <div class="info-item">
+                            <div class="info-label">Nombre</div>
+                            <div class="info-value" th:text="${appUser.nombre != null ? appUser.nombre : 'No especificado'}">
+                                No especificado
+                            </div>
+                        </div>
+                        
+                        <!-- Apellido -->
+                        <div class="info-item">
+                            <div class="info-label">Apellido</div>
+                            <div class="info-value" th:text="${appUser.apellido != null ? appUser.apellido : 'No especificado'}">
+                                No especificado
+                            </div>
+                        </div>
+                        
+                        <!-- Email -->
+                        <div class="info-item">
+                            <div class="info-label">Correo Electrónico</div>
+                            <div class="info-value" th:text="${appUser.email != null ? appUser.email : 'No especificado'}">
+                                No especificado
+                            </div>
+                        </div>
+                        
+                        <!-- Teléfono -->
+                        <div class="info-item">
+                            <div class="info-label">Teléfono</div>
+                            <div th:if="${appUser.telefono != null && !appUser.telefono.isEmpty()}" 
+                                 class="info-value" th:text="${appUser.telefono}">
+                                1234567890
+                            </div>
+                            <div th:unless="${appUser.telefono != null && !appUser.telefono.isEmpty()}" 
+                                 class="info-value info-value-empty">
+                                No especificado
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Información de Contacto -->
+                <div class="info-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-address-book me-2"></i>
+                        Información de Contacto
+                    </h3>
+                    <div class="info-grid">
+                        <!-- Dirección -->
+                        <div class="info-item">
+                            <div class="info-label">Dirección</div>
+                            <div th:if="${appUser.direccion != null && !appUser.direccion.isEmpty()}" 
+                                 class="info-value" th:text="${appUser.direccion}">
+                                Calle 123, Ciudad, País
+                            </div>
+                            <div th:unless="${appUser.direccion != null && !appUser.direccion.isEmpty()}" 
+                                 class="info-value info-value-empty">
+                                No especificada
+                            </div>
+                        </div>
+                        
+                        <!-- Rol - CORREGIDO -->
+                        <div class="info-item">
+                            <div class="info-label">Rol de Usuario</div>
+                            <div class="info-value">
+                                <span th:if="${appUser.rol != null}" 
+                                      class="role-badge"
+                                      th:classappend="${appUser.rol == 'ADMIN'} ? 'role-admin' : 
+                                                     (${appUser.rol == 'CLIENT'} ? 'role-client' : 
+                                                     (${appUser.rol == 'AGENT'} ? 'role-agent' : 'role-client'))"
+                                      th:text="${appUser.rol}">
+                                    CLIENT
+                                </span>
+                                <span th:unless="${appUser.rol != null}" 
+                                      class="info-value-empty">
+                                    No asignado
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Información de la Cuenta -->
+                <div class="info-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-cog me-2"></i>
+                        Información de la Cuenta
+                    </h3>
+                    <div class="info-grid">
+                        <!-- Fecha de Creación -->
+                        <div class="info-item">
+                            <div class="info-label">Fecha de Registro</div>
+							<div class="info-value" th:text="${appUser.createdAt != null ? #dates.format(appUser.createdAt, 'dd/MM/yyyy HH:mm') : 'No disponible'}">
+							    01/01/2024 10:00
+							</div>
+                        </div>
+                        
+                        <!-- Estado de la Cuenta -->
+                        <div class="info-item">
+                            <div class="info-label">Estado</div>
+                            <div class="info-value">
+                                <span class="text-success">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    Activa
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Back Button -->
+        <div class="back-button">
+            <a th:href="@{/admin/dashboard}" class="btn btn-primary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Volver al Dashboard
+            </a>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Simple script para manejar el sidebar en móviles
+        document.addEventListener('DOMContentLoaded', function() {
+            // Si existe el botón de toggle del sidebar
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    const sidebar = document.querySelector('.sidebar');
+                    if (sidebar) {
+                        sidebar.classList.toggle('active');
+                    }
+                });
+            }
+            
+            // Cerrar sidebar al hacer clic en enlaces (móviles)
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth < 992) {
+                        const sidebar = document.querySelector('.sidebar');
+                        if (sidebar) {
+                            sidebar.classList.remove('active');
+                        }
+                    }
+                });
+            });
+            
+            // Añadir clase active al enlace actual
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

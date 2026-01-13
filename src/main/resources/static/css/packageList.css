@@ -1,0 +1,61 @@
+:root {
+      --primary-blue: #1e40af;
+      --secondary-blue: #3b82f6;
+      --accent-yellow: #fbbf24;
+  }
+  
+  .main-content {
+      margin-left: 280px;
+      padding: 2rem;
+      min-height: 100vh;
+      background-color: #f8fafc;
+  }
+  
+  .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .page-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-blue);
+  }
+  
+  .btn-primary-custom {
+      background-color: var(--primary-blue);
+      border-color: var(--primary-blue);
+      color: white;
+  }
+  
+  .btn-primary-custom:hover {
+      background-color: var(--secondary-blue);
+      border-color: var(--secondary-blue);
+  }
+  
+  .package-image {
+      width: 60px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 6px;
+  }
+  
+  .price-badge {
+      background-color: var(--accent-yellow);
+      color: #1f2937;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-weight: 600;
+  }
+  
+  @media (max-width: 992px) {
+      .main-content {
+          margin-left: 0;
+          padding: 1rem;
+      }
+  }
+  
