@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link th:href="@{/css/sidebar-fragment.css}" rel="stylesheet">
-	<link th:href="@{/css/createNews.css}" rel="stylesheet">
+    <link th:href="@{/css/createNews.css}" rel="stylesheet">
    
 </head>
 <body>
@@ -210,7 +210,7 @@
                             <a th:href="@{/admin/noticias/newsList}" class="btn btn-outline-secondary">
                                 <i class="fas fa-times me-2"></i>Cancelar
                             </a>
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
                                 <i class="fas fa-save me-2"></i>Crear Noticia
                             </button>
                         </div>
@@ -223,125 +223,430 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Scripts personlizados limpios -->
+    <!-- Script corregido para producción -->
     <script>
-        // Contadores de caracteres
-        function setupCharacterCounters() {
-            const tituloInput = document.getElementById('tituloInput');
-            const contenidoInput = document.getElementById('contenidoNoticia');
-            const facebookText = document.getElementById('facebookText');
+        (function() {
+            'use strict';
             
-            if (tituloInput) {
-                const tituloCounter = document.getElementById('tituloCounter');
-                tituloInput.addEventListener('input', function() {
-                    tituloCounter.textContent = this.value.length;
-                });
-                tituloCounter.textContent = tituloInput.value.length;
-            }
+            console.log('=== Niagara News Creator v1.0 ===');
+            console.log('Entorno: Producción');
+            console.log('URL:', window.location.href);
             
-            if (contenidoInput) {
-                const contenidoCounter = document.getElementById('contenidoCounter');
-                contenidoInput.addEventListener('input', function() {
-                    contenidoCounter.textContent = this.value.length;
-                });
-                contenidoCounter.textContent = contenidoInput.value.length;
-            }
-            
-            if (facebookText) {
-                const facebookTextCounter = document.getElementById('facebookTextCounter');
-                facebookText.addEventListener('input', function() {
-                    facebookTextCounter.textContent = this.value.length;
-                });
-                facebookTextCounter.textContent = facebookText.value.length;
-            }
-        }
-        
-        // Vista previa en tiempo real
-        function setupLivePreview() {
-            const tituloInput = document.getElementById('tituloInput');
-            const contenidoInput = document.getElementById('contenidoNoticia');
-            const imagenUrlInput = document.getElementById('imagenUrl');
-            const previewContent = document.getElementById('previewContent');
-            
-            function updatePreview() {
-                const titulo = tituloInput.value || 'Título de la noticia';
-                const contenido = contenidoInput.value || 'Contenido de la noticia...';
-                const imagenUrl = imagenUrlInput.value || 'https://via.placeholder.com/800x400/4a6fa5/ffffff?text=Niagara+Viajes';
+            // Verificar dependencias críticas
+            function checkDependencies() {
+                console.log('Verificando dependencias...');
                 
-                let previewHTML = `
-                    <div class="preview-loading">
-                        <h4 class="mb-3">${titulo}</h4>
-                        <div class="mb-3">
-                            <img src="${imagenUrl}" alt="Imagen de noticia" class="img-fluid rounded" style="max-height: 200px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/800x400/4a6fa5/ffffff?text=Niagara+Viajes'">
-                        </div>
-                        <p>${contenido.substring(0, 300)}${contenido.length > 300 ? '...' : ''}</p>
-                        <div class="mt-3">
-                            <span class="badge bg-primary me-2">Noticia</span>
-                            <small class="text-muted"><i class="far fa-calendar me-1"></i>Publicada recientemente</small>
-                        </div>
-                    </div>
-                `;
+                const requiredElements = [
+                    'tituloInput',
+                    'contenidoNoticia',
+                    'noticiaForm',
+                    'previewContent'
+                ];
                 
-                previewContent.innerHTML = previewHTML;
-            }
-            
-            // Actualizar vista previa al escribir
-            [tituloInput, contenidoInput, imagenUrlInput].forEach(input => {
-                if (input) {
-                    input.addEventListener('input', updatePreview);
+                const missing = [];
+                requiredElements.forEach(id => {
+                    const element = document.getElementById(id);
+                    if (!element) {
+                        missing.push(id);
+                        console.warn('Elemento no encontrado:', id);
+                    }
+                });
+                
+                if (missing.length > 0) {
+                    console.error('Elementos faltantes:', missing);
+                    return false;
                 }
+                
+                console.log('Todas las dependencias encontradas');
+                return true;
+            }
+            
+            // Contadores de caracteres con manejo robusto
+            function setupCharacterCounters() {
+                try {
+                    console.log('Configurando contadores de caracteres...');
+                    
+                    const countersConfig = [
+                        { 
+                            inputId: 'tituloInput', 
+                            counterId: 'tituloCounter', 
+                            max: 150 
+                        },
+                        { 
+                            inputId: 'contenidoNoticia', 
+                            counterId: 'contenidoCounter', 
+                            max: null 
+                        },
+                        { 
+                            inputId: 'facebookText', 
+                            counterId: 'facebookTextCounter', 
+                            max: 500 
+                        }
+                    ];
+                    
+                    countersConfig.forEach(config => {
+                        const input = document.getElementById(config.inputId);
+                        const counter = document.getElementById(config.counterId);
+                        
+                        if (input && counter) {
+                            // Función para actualizar el contador
+                            const updateCounter = () => {
+                                try {
+                                    const length = input.value.length;
+                                    counter.textContent = config.max ? 
+                                        `${length}/${config.max}` : 
+                                        `${length}`;
+                                } catch (e) {
+                                    console.error(`Error actualizando contador ${config.counterId}:`, e);
+                                }
+                            };
+                            
+                            // Actualizar contador inicial
+                            updateCounter();
+                            
+                            // Escuchar cambios con debounce para mejor performance
+                            let timeout;
+                            input.addEventListener('input', function() {
+                                clearTimeout(timeout);
+                                timeout = setTimeout(updateCounter, 50);
+                            });
+                            
+                            // También actualizar en eventos de cambio
+                            input.addEventListener('change', updateCounter);
+                            
+                            console.log(`Contador configurado: ${config.inputId}`);
+                        } else {
+                            console.warn(`No se pudo configurar contador: ${config.inputId}`);
+                        }
+                    });
+                    
+                    console.log('Contadores configurados correctamente');
+                } catch (error) {
+                    console.error('Error crítico en setupCharacterCounters:', error);
+                }
+            }
+            
+            // Vista previa en tiempo real con manejo de errores
+            function setupLivePreview() {
+                try {
+                    console.log('Configurando vista previa...');
+                    
+                    const previewContent = document.getElementById('previewContent');
+                    if (!previewContent) {
+                        console.error('Elemento previewContent no encontrado');
+                        return;
+                    }
+                    
+                    // Función para escapar HTML (seguridad)
+                    const escapeHtml = (text) => {
+                        if (!text) return '';
+                        const div = document.createElement('div');
+                        div.textContent = text;
+                        return div.innerHTML;
+                    };
+                    
+                    // Función para actualizar la vista previa
+                    const updatePreview = () => {
+                        try {
+                            const tituloInput = document.getElementById('tituloInput');
+                            const contenidoInput = document.getElementById('contenidoNoticia');
+                            const imagenUrlInput = document.getElementById('imagenUrl');
+                            
+                            if (!tituloInput || !contenidoInput) {
+                                console.warn('Campos requeridos no encontrados para vista previa');
+                                return;
+                            }
+                            
+                            const titulo = escapeHtml(tituloInput.value) || 'Título de la noticia';
+                            const contenido = escapeHtml(contenidoInput.value) || 'Contenido de la noticia...';
+                            const imagenUrl = imagenUrlInput ? 
+                                escapeHtml(imagenUrlInput.value) : 
+                                'https://via.placeholder.com/800x400/4a6fa5/ffffff?text=Niagara+Viajes';
+                            
+                            const previewHTML = `
+                                <div class="preview-card">
+                                    <h4 class="mb-3 text-primary">${titulo}</h4>
+                                    <div class="mb-3">
+                                        <img src="${imagenUrl}" 
+                                             alt="Imagen de noticia" 
+                                             class="img-fluid rounded" 
+                                             style="max-height: 200px; object-fit: cover; width: 100%;"
+                                             onerror="this.onerror=null; this.src='https://via.placeholder.com/800x400/4a6fa5/ffffff?text=Niagara+Viajes'">
+                                    </div>
+                                    <p class="text-justify">${escapeHtml(contenido.substring(0, 300))}${contenido.length > 300 ? '...' : ''}</p>
+                                    <div class="mt-3 d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-primary me-2">Noticia</span>
+                                        <small class="text-muted">
+                                            <i class="far fa-calendar me-1"></i>
+                                            ${new Date().toLocaleDateString('es-ES')}
+                                        </small>
+                                    </div>
+                                </div>
+                            `;
+                            
+                            previewContent.innerHTML = previewHTML;
+                        } catch (error) {
+                            console.error('Error al generar vista previa:', error);
+                            previewContent.innerHTML = `
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    Error al generar vista previa
+                                </div>
+                            `;
+                        }
+                    };
+                    
+                    // Configurar listeners para los campos relevantes
+                    const fieldsToWatch = ['tituloInput', 'contenidoNoticia', 'imagenUrl'];
+                    fieldsToWatch.forEach(fieldId => {
+                        const field = document.getElementById(fieldId);
+                        if (field) {
+                            // Usar debounce para mejorar rendimiento
+                            let debounceTimer;
+                            field.addEventListener('input', function() {
+                                clearTimeout(debounceTimer);
+                                debounceTimer = setTimeout(updatePreview, 200);
+                            });
+                            console.log(`Listener agregado a: ${fieldId}`);
+                        }
+                    });
+                    
+                    // Inicializar vista previa
+                    setTimeout(updatePreview, 100);
+                    
+                    console.log('Vista previa configurada correctamente');
+                } catch (error) {
+                    console.error('Error crítico en setupLivePreview:', error);
+                }
+            }
+            
+            // Validación de formulario robusta
+            function setupFormValidation() {
+                try {
+                    console.log('Configurando validación de formulario...');
+                    
+                    const form = document.getElementById('noticiaForm');
+                    const submitBtn = document.getElementById('submitBtn');
+                    
+                    if (!form) {
+                        console.error('Formulario no encontrado');
+                        return;
+                    }
+                    
+                    // Deshabilitar validación nativa del navegador
+                    form.setAttribute('novalidate', 'novalidate');
+                    
+                    // Validar campo individual
+                    const validateField = (input, minLength, errorMessage) => {
+                        const value = input.value.trim();
+                        const isValid = value.length >= minLength;
+                        
+                        if (!isValid) {
+                            input.classList.add('is-invalid');
+                            if (!input.nextElementSibling || !input.nextElementSibling.classList.contains('invalid-feedback')) {
+                                const errorDiv = document.createElement('div');
+                                errorDiv.className = 'invalid-feedback';
+                                errorDiv.textContent = errorMessage;
+                                input.parentNode.appendChild(errorDiv);
+                            }
+                        } else {
+                            input.classList.remove('is-invalid');
+                            const errorDiv = input.nextElementSibling;
+                            if (errorDiv && errorDiv.classList.contains('invalid-feedback')) {
+                                errorDiv.remove();
+                            }
+                        }
+                        
+                        return isValid;
+                    };
+                    
+                    // Validación en tiempo real
+                    const tituloInput = document.getElementById('tituloInput');
+                    const contenidoInput = document.getElementById('contenidoNoticia');
+                    
+                    if (tituloInput) {
+                        tituloInput.addEventListener('blur', function() {
+                            validateField(this, 5, 'El título debe tener al menos 5 caracteres');
+                        });
+                    }
+                    
+                    if (contenidoInput) {
+                        contenidoInput.addEventListener('blur', function() {
+                            validateField(this, 50, 'El contenido debe tener al menos 50 caracteres');
+                        });
+                    }
+                    
+                    // Validación al enviar
+                    form.addEventListener('submit', function(event) {
+                        console.log('Validando formulario antes de enviar...');
+                        
+                        event.preventDefault();
+                        event.stopPropagation();
+                        
+                        let isValid = true;
+                        const errors = [];
+                        
+                        // Validar título
+                        if (tituloInput && !validateField(tituloInput, 5, 'El título debe tener al menos 5 caracteres')) {
+                            isValid = false;
+                            errors.push('Título muy corto (mínimo 5 caracteres)');
+                        }
+                        
+                        // Validar contenido
+                        if (contenidoInput && !validateField(contenidoInput, 50, 'El contenido debe tener al menos 50 caracteres')) {
+                            isValid = false;
+                            errors.push('Contenido muy corto (mínimo 50 caracteres)');
+                        }
+                        
+                        if (isValid) {
+                            console.log('Formulario válido, procediendo con envío...');
+                            
+                            // Deshabilitar botón para evitar doble envío
+                            if (submitBtn) {
+                                submitBtn.disabled = true;
+                                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creando...';
+                            }
+                            
+                            // Enviar formulario
+                            setTimeout(() => {
+                                form.submit();
+                            }, 100);
+                        } else {
+                            console.warn('Formulario inválido:', errors);
+                            
+                            // Mostrar alerta con errores
+                            if (errors.length > 0) {
+                                const alertHTML = `
+                                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <strong>Por favor corrige los siguientes errores:</strong>
+                                        <ul class="mb-0 mt-1">
+                                            ${errors.map(error => `<li>${error}</li>`).join('')}
+                                        </ul>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                `;
+                                
+                                // Insertar alerta después del formulario
+                                form.insertAdjacentHTML('afterend', alertHTML);
+                                
+                                // Desplazar a los errores
+                                window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        }
+                        
+                        form.classList.add('was-validated');
+                    });
+                    
+                    console.log('Validación de formulario configurada');
+                } catch (error) {
+                    console.error('Error crítico en setupFormValidation:', error);
+                }
+            }
+            
+            // Inicialización principal con reintentos
+            function init() {
+                console.log('=== Iniciando aplicación ===');
+                
+                // Verificar que estamos en la página correcta
+                if (!window.location.pathname.includes('/admin/noticias/createNews')) {
+                    console.log('No es la página de creación de noticias, omitiendo inicialización');
+                    return;
+                }
+                
+                // Verificar dependencias
+                if (!checkDependencies()) {
+                    console.warn('Faltan dependencias, reintentando en 500ms...');
+                    setTimeout(init, 500);
+                    return;
+                }
+                
+                // Inicializar componentes
+                try {
+                    setupCharacterCounters();
+                    setupLivePreview();
+                    setupFormValidation();
+                    
+                    console.log('=== Aplicación inicializada correctamente ===');
+                    
+                    // Marcar como cargado
+                    document.body.setAttribute('data-app-loaded', 'true');
+                    
+                } catch (error) {
+                    console.error('Error durante la inicialización:', error);
+                    
+                    // Mostrar mensaje de error al usuario
+                    const errorAlert = `
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Atención:</strong> Hubo un problema al cargar algunas funcionalidades.
+                            Por favor, recarga la página o contacta con soporte.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    `;
+                    
+                    const header = document.querySelector('.content-header');
+                    if (header) {
+                        header.insertAdjacentHTML('afterend', errorAlert);
+                    }
+                }
+            }
+            
+            // Estrategias de inicialización múltiples
+            function startApp() {
+                // Intentar inmediatamente si el DOM ya está listo
+                if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                    console.log('DOM ya está listo, iniciando...');
+                    setTimeout(init, 100);
+                } else {
+                    // Esperar a que el DOM esté listo
+                    console.log('Esperando a que el DOM esté listo...');
+                    document.addEventListener('DOMContentLoaded', function() {
+                        console.log('DOMContentLoaded disparado');
+                        setTimeout(init, 100);
+                    });
+                }
+                
+                // Backup: iniciar después de 3 segundos máximo
+                setTimeout(function() {
+                    if (!document.body.getAttribute('data-app-loaded')) {
+                        console.warn('Inicialización por timeout');
+                        init();
+                    }
+                }, 3000);
+            }
+            
+            // Iniciar la aplicación
+            startApp();
+            
+            // Exportar funciones para debugging
+            window.__niagaraNewsDebug = {
+                reinit: init,
+                checkDeps: checkDependencies,
+                version: '1.0.0-production'
+            };
+            
+        })();
+    </script>
+    
+    <!-- Script de diagnóstico adicional -->
+    <script>
+        // Solo en producción - Diagnóstico adicional
+        if (window.location.hostname !== 'localhost' && !window.location.hostname.includes('127.0.0.1')) {
+            window.addEventListener('error', function(e) {
+                console.error('Error global capturado:', e.error);
+                console.error('En archivo:', e.filename);
+                console.error('Línea:', e.lineno, 'Columna:', e.colno);
             });
             
-            // Inicializar vista previa
-            updatePreview();
-        }
-        
-        // Validación de formulario - SIMPLIFICADA
-        function setupFormValidation() {
-            const form = document.getElementById('noticiaForm');
-            if (form) {
-                form.addEventListener('submit', function(event) {
-                    let hasErrors = false;
-                    
-                    // Validar título (mínimo 5 caracteres)
-                    const tituloInput = document.getElementById('tituloInput');
-                    if (tituloInput) {
-                        const tituloValue = tituloInput.value.trim();
-                        if (tituloValue.length < 5) {
-                            tituloInput.classList.add('is-invalid');
-                            hasErrors = true;
-                        } else {
-                            tituloInput.classList.remove('is-invalid');
-                        }
-                    }
-                    
-                    // Validar contenido (mínimo 50 caracteres)
-                    const contenidoInput = document.getElementById('contenidoNoticia');
-                    if (contenidoInput) {
-                        const contenidoValue = contenidoInput.value.trim();
-                        if (contenidoValue.length < 50) {
-                            contenidoInput.classList.add('is-invalid');
-                            hasErrors = true;
-                        } else {
-                            contenidoInput.classList.remove('is-invalid');
-                        }
-                    }
-                    
-                    if (hasErrors) {
-                        event.preventDefault();
-                    }
-                    
-                    form.classList.add('was-validated');
-                });
+            // Verificar que Bootstrap esté cargado
+            if (typeof bootstrap === 'undefined') {
+                console.error('Bootstrap no está cargado correctamente');
             }
         }
-        
-        // Inicializar cuando el DOM esté cargado
-        document.addEventListener('DOMContentLoaded', function() {
-            setupCharacterCounters();
-            setupLivePreview();
-            setupFormValidation();
-        });
     </script>
 </body>
 </html>
